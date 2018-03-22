@@ -7,8 +7,25 @@ pipeline {
       }
     }
     stage('Test') {
-      steps {
-        sh 'echo \'test\''
+      parallel {
+        stage('Test') {
+          steps {
+            sh 'echo \'test\''
+          }
+        }
+        stage('integration') {
+          steps {
+            waitUntil() {
+              sh 'echo wait integration'
+            }
+            
+          }
+        }
+        stage('acceptance') {
+          steps {
+            sh 'echo acceptance'
+          }
+        }
       }
     }
     stage('deploy to test') {
@@ -26,5 +43,8 @@ pipeline {
         sh 'echo \'deploy to prod\''
       }
     }
+  }
+  environment {
+    asdfg = '123'
   }
 }
