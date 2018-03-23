@@ -15,6 +15,7 @@ pipeline {
         }
         stage('integration') {
           steps {
+            milestone 1
             echo 'integration'
           }
         }
@@ -37,6 +38,7 @@ pipeline {
     }
     stage('deploy to prod') {
       steps {
+        milestone 2
         sh 'echo \'deploy to prod\''
         input(message: 'Are you sure want to deploy to PROD', id: '1', ok: 'OK', submitter: 'admin')
       }
