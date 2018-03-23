@@ -45,13 +45,6 @@ pipeline {
   environment {
     asdfg = '123'
   }
-  post {
-    always {
-      cleanWs()
-      
-    }
-    
-  }
   options {
     timeout(time: 60, unit: 'MINUTES')
   }
