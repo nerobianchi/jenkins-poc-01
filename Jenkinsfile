@@ -26,10 +26,7 @@ pipeline {
         }
         stage('acceptance') {
           steps {
-            withEnv(overrides: ['MYTOOL_HOME=acceptance']) {
-              sh 'echo $MYTOOL_HOME'
-            }
-            
+            sh 'echo acceptanceeeee'
           }
         }
       }
