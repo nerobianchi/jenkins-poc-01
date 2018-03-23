@@ -16,7 +16,10 @@ pipeline {
         stage('integration') {
           steps {
             waitUntil() {
-              sh 'return true'
+              script {
+                return true
+              }
+              
             }
             
           }
