@@ -33,7 +33,7 @@ pipeline {
           steps {
             throttle(categories: ['throttleDocker']) {
               node(label: 'docker') {
-                sh 'sleep 500'
+                sh 'sleep 1'
                 echo 'Done'
               }
               
@@ -61,5 +61,15 @@ pipeline {
   }
   environment {
     asdfg = '123'
+  }
+  post {
+    always {
+      cleanWs()
+      
+    }
+    
+  }
+  options {
+    timeout(time: 60, unit: 'MINUTES')
   }
 }
