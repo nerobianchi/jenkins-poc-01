@@ -38,7 +38,7 @@ pipeline {
     stage('deploy to prod') {
       steps {
         sh 'echo \'deploy to prod\''
-        input(message: 'Are you sure want to deploy to PROD', id: '1', ok: 'OK', submitter: 'admin', submitterParameter: 'a2')
+        input(message: 'Are you sure want to deploy to PROD', id: '1', ok: 'OK', submitter: 'admin')
       }
     }
   }
