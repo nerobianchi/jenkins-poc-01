@@ -15,13 +15,7 @@ pipeline {
         }
         stage('integration') {
           steps {
-            waitUntil() {
-              script {
-                return true
-              }
-              
-            }
-            
+            echo 'integration'
           }
         }
         stage('acceptance') {
