@@ -29,6 +29,18 @@ pipeline {
             sh 'echo acceptanceeeee'
           }
         }
+        stage('acceptance2') {
+          steps {
+            throttle(categories: ['throttleDocker']) {
+              node(label: 'docker') {
+                sh 'sleep 1'
+                echo 'Done'
+              }
+              
+            }
+            
+          }
+        }
       }
     }
     stage('deploy to test') {
