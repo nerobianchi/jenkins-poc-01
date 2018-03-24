@@ -1,54 +1,21 @@
 pipeline {
   agent any
   stages {
-    stage('Build') {
+    stage('Deploy - Staging') {
       steps {
-        sh 'echo \'build\''
+        echo './deploy staging'
+        echo './run-smoke-tests'
       }
     }
-    stage('Test') {
-      parallel {
-        stage('Test') {
-          steps {
-            sh 'echo \'test\''
-          }
-        }
-        stage('integration') {
-          steps {
-            echo 'integration'
-          }
-        }
-        stage('acceptance') {
-          steps {
-            sh 'echo acceptanceeeee'
-          }
-        }
-      }
-    }
-    stage('deploy to test') {
+    stage('Sanity check') {
       steps {
-        milestone 1
-        sh 'echo \'deploy to test\''
+        input 'Does the staging environment look ok?'
       }
     }
-    stage('deploy to qa') {
+    stage('Deploy - Production') {
       steps {
-        milestone 2
-        sh 'echo \'deploy to qa\''
+        echo './deploy production'
       }
     }
-    stage('deploy to prod') {
-      steps {
-        milestone 3
-        sh 'echo \'deploy to prod\''
-        input(message: 'Are you sure want to deploy to PROD', id: '1', ok: 'OK', submitter: 'admin')
-      }
-    }
-  }
-  environment {
-    asdfg = '123'
-  }
-  options {
-    timeout(time: 60, unit: 'MINUTES')
   }
 }
