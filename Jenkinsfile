@@ -1,26 +1,27 @@
 pipeline {
-  agent any
+  agent none
   stages {
-    stage('Deploy - Staging') {
+    stage('Back-end') {
+      agent {
+        docker {
+          image 'maven:3-alpine'
+        }
+        
+      }
       steps {
-        echo "${env.HELLO}"
-        echo './deploy staging'
-        echo './run-smoke-tests'
-        sh 'printenv'
+        sh 'mvn --version'
       }
     }
-    stage('Sanity check') {
+    stage('Front-end') {
+      agent {
+        docker {
+          image 'node:7-alpine'
+        }
+        
+      }
       steps {
-        input 'Does the staging environment look ok?'
+        sh 'node --version'
       }
     }
-    stage('Deploy - Production') {
-      steps {
-        echo './deploy production'
-      }
-    }
-  }
-  environment {
-    HELLO = 'world'
   }
 }
