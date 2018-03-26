@@ -6,6 +6,7 @@ pipeline {
         echo '${env.HELLO}'
         echo './deploy staging'
         echo './run-smoke-tests'
+        sh 'echo ${env.HELLOW}'
       }
     }
     stage('Sanity check') {
