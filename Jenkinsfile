@@ -1,13 +1,25 @@
 pipeline {
-  agent {
-    dockerfile true
-  }
+  agent any
   stages {
-    stage('Example') {
+    stage('Deploy - Staging') {
       steps {
-        echo 'Hello World!'
-        sh 'echo myCustomEnvVar = $myCustomerEnvVar'
+        echo $HELLO
+        echo './deploy staging'
+        echo './run-smoke-tests'
       }
     }
+    stage('Sanity check') {
+      steps {
+        input 'Does the staging environment look ok?'
+      }
+    }
+    stage('Deploy - Production') {
+      steps {
+        echo './deploy production'
+      }
+    }
+  }
+  environment {
+    HELLO = 'world'
   }
 }
