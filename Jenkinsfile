@@ -3,10 +3,10 @@ pipeline {
   stages {
     stage('Deploy - Staging') {
       steps {
-        echo '${env.HELLO}'
+        echo "${env.HELLO}"
         echo './deploy staging'
         echo './run-smoke-tests'
-        sh 'echo ${env.HELLOW}'
+        sh 'printenv'
       }
     }
     stage('Sanity check') {
