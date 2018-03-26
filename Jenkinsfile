@@ -3,7 +3,7 @@ pipeline {
   stages {
     stage('Deploy - Staging') {
       steps {
-        echo $HELLO
+        echo '${env.HELLO}'
         echo './deploy staging'
         echo './run-smoke-tests'
       }
