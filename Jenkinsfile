@@ -12,6 +12,11 @@ pipeline {
         sh 'mvn --version'
       }
     }
+    stage 'Promotion' {
+    timeout(time: 1, unit: 'HOURS') {
+      input 'Deploy to Production?'
+    }
+  }
     stage('Front-end') {
       agent {
         docker {
@@ -19,6 +24,7 @@ pipeline {
         }
         
       }
+      
       steps {
         sh 'node --version'
       }
