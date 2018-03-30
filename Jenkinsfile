@@ -8,7 +8,9 @@ pipeline {
     }
     stage('Select deploy target') {
       steps {
-        input 'Deploy?'
+        timeout(time: 5, unit: 'DAYS') {
+            input message: 'Approve deployment?'
+        }
       }
     }
     stage('Front-end') {
