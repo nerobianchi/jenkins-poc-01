@@ -1,22 +1,50 @@
-#!groovy​
 pipeline {
   agent any
   stages {
-    stage('Back-end') {
+    stage('Build') {
       steps {
-        sh 'echo hellow'
+        sh 'echo Building'
       }
     }
     stage('Select deploy target') {
-      steps {
-        timeout(time: 5, unit: 'DAYS') {
-            input message: 'Approve deployment?'
+      parallel {
+        stage('Integration Tests') {
+          steps {
+            timeout(time: 5, unit: 'DAYS') {
+              input 'Approve deployment?'
+            }
+            
+          }
+        }
+        stage('Acceptance Tests') {
+          steps {
+            timeout(time: 5, unit: 'DAYS') {
+              input 'sure?'
+            }
+            
+          }
         }
       }
     }
-    stage('Front-end') {
+    stage('Deploy to Test') {
       steps {
-        sh 'echo hellowwwww'
+        sh 'echo Deploy to testing'
+      }
+    }
+    stage('Deploy to QA') {
+      steps {
+        timeout(time: 5, unit: 'DAYS') {
+          input 'Deploy to QA?'
+        }
+        
+      }
+    }
+    stage('Deploy to Prod') {
+      steps {
+        timeout(time: 5, unit: 'DAYS') {
+          input 'Deploy to Prod?'
+        }
+        
       }
     }
   }
