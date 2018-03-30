@@ -1,5 +1,5 @@
 pipeline {
-  agent none
+  agent any
   stages {
     stage('Back-end') {
       
@@ -7,14 +7,8 @@ pipeline {
         sh 'echo hellow'
       }
     }
-    stage 'Promotion' {
-    timeout(time: 1, unit: 'HOURS') {
-      input 'Deploy to Production?'
-    }
-  }
+    
     stage('Front-end') {
-      
-      
      steps {
         sh 'echo hellowwwww'
       }
