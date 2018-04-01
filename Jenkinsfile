@@ -13,6 +13,7 @@ pipeline {
             timeout(time: 5, unit: 'DAYS') {
               input 'Approve deployment?'
             }
+            
           }
         }
         stage('Acceptance Tests') {
@@ -20,6 +21,7 @@ pipeline {
             timeout(time: 5, unit: 'DAYS') {
               input 'sure?'
             }
+            
           }
         }
       }
@@ -34,7 +36,8 @@ pipeline {
         timeout(time: 5, unit: 'DAYS') {
           input 'Deploy to QA?'
         }
-          sh 'deploy to qa'
+        
+        sh 'echo deploy to qa'
       }
     }
     stage('Deploy to Prod') {
@@ -42,7 +45,8 @@ pipeline {
         timeout(time: 5, unit: 'DAYS') {
           input 'Deploy to Prod?'
         }
-          sh 'deploy to prod'
+        
+        sh 'echo deploy to prod'
       }
     }
   }
