@@ -1,36 +1,22 @@
 pipeline {
-    agent none
+    agent any
+    parameters {
+        choice(
+            // choices are a string of newline separated values
+            // https://issues.jenkins-ci.org/browse/JENKINS-41180
+            choices: 'greeting\nsilence',
+            description: '',
+            name: 'REQUESTED_ACTION')
+    }
+
     stages {
-        stage("Prepare build") {
-            agent any 
-            steps {
-                echo "prepare: ${pwd()}"
+        stage ('Speak') {
+            when {
+                // Only say hello if a "greeting" is requested
+                expression { params.REQUESTED_ACTION == 'greeting' }
             }
-        }
-        stage("Build") {
-            agent any
             steps {
-                parallel(
-                    frontend: {
-                        echo "frontend: ${pwd()}"
-                    },
-                    backend: {
-                        echo "backend: ${pwd()}"
-                    }
-                )
-            }
-        }
-       
-        stage("Select deploy target") {
-            agent none
-            steps {
-                input message: 'Deploy?'
-            }
-        }
-        stage("Deploy") {
-            agent any
-            steps {
-                echo "deploy: ${pwd()}"
+                echo "Hello, bitwiseman!"
             }
         }
     }
