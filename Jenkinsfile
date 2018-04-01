@@ -1,23 +1,49 @@
 pipeline {
-    agent any
-    parameters {
-        choice(
-            // choices are a string of newline separated values
-            // https://issues.jenkins-ci.org/browse/JENKINS-41180
-            choices: 'greeting\nsilence',
-            description: '',
-            name: 'REQUESTED_ACTION')
+  agent any
+  stages {
+    stage('Build') {
+      steps {
+        sh 'echo Building'
+      }
     }
-
-    stages {
-        stage ('Speak') {
-            when {
-                // Only say hello if a "greeting" is requested
-                expression { params.REQUESTED_ACTION == 'greeting' }
+    stage('Select deploy target') {
+      parallel {
+        stage('Integration Tests') {
+          steps {
+            timeout(time: 5, unit: 'DAYS') {
+              input 'Approve deployment?'
             }
-            steps {
-                echo "Hello, bitwiseman!"
-            }
+          }
         }
+        stage('Acceptance Tests') {
+          steps {
+            timeout(time: 5, unit: 'DAYS') {
+              input 'sure?'
+            }
+          }
+        }
+      }
     }
+    stage('Deploy to Test') {
+      steps {
+        sh 'echo Deploy to testing'
+      }
+    }
+    stage('Deploy to QA') {
+      steps {
+        timeout(time: 5, unit: 'DAYS') {
+          input 'Deploy to QA?'
+        }
+          sh 'deploy to qa'
+      }
+    }
+    stage('Deploy to Prod') {
+      steps {
+        timeout(time: 5, unit: 'DAYS') {
+          input 'Deploy to Prod?'
+        }
+          sh 'deploy to prod'
+      }
+    }
+  }
 }
