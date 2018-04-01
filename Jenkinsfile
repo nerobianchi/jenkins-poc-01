@@ -2,13 +2,13 @@ pipeline {
     agent none
     stages {
         stage("Prepare build") {
-            agent { label 'some-agent' }
+            agent { any }
             steps {
                 echo "prepare: ${pwd()}"
             }
         }
         stage("Build") {
-            agent { label 'some-agent' }
+            agent { any }
             steps {
                 parallel(
                     frontend: {
@@ -28,7 +28,7 @@ pipeline {
             }
         }
         stage("Deploy") {
-            agent { label 'some-agent' }
+            agent { any }
             steps {
                 echo "deploy: ${pwd()}"
             }
