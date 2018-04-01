@@ -1,51 +1,37 @@
 pipeline {
-  agent any
-  stages {
-    stage('Build') {
-      steps {
-        sh 'echo Building'
-      }
-    }
-    stage('Select deploy target') {
-      parallel {
-        stage('Integration Tests') {
-          steps {
-            timeout(time: 5, unit: 'DAYS') {
-              input 'Approve deployment?'
+    agent none
+    stages {
+        stage("Prepare build") {
+            agent { label 'some-agent' }
+            steps {
+                echo "prepare: ${pwd()}"
             }
-            
-          }
         }
-        stage('Acceptance Tests') {
-          steps {
-            timeout(time: 5, unit: 'DAYS') {
-              input 'sure?'
+        stage("Build") {
+            agent { label 'some-agent' }
+            steps {
+                parallel(
+                    frontend: {
+                        echo "frontend: ${pwd()}"
+                    },
+                    backend: {
+                        echo "backend: ${pwd()}"
+                    }
+                )
             }
-            
-          }
         }
-      }
-    }
-    stage('Deploy to Test') {
-      steps {
-        sh 'echo Deploy to testing'
-      }
-    }
-    stage('Deploy to QA') {
-      steps {
-        timeout(time: 5, unit: 'DAYS') {
-          input 'Deploy to QA?'
+       
+        stage("Select deploy target") {
+            agent none
+            steps {
+                input message: 'Deploy?'
+            }
         }
-        
-      }
-    }
-    stage('Deploy to Prod') {
-      steps {
-        timeout(time: 5, unit: 'DAYS') {
-          input 'Deploy to Prod?'
+        stage("Deploy") {
+            agent { label 'some-agent' }
+            steps {
+                echo "deploy: ${pwd()}"
+            }
         }
-        
-      }
     }
-  }
 }
