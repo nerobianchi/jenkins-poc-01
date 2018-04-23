@@ -1,16 +1,25 @@
 pipeline {
   agent any
   stages {
-    stage('Example') {
-      input {
-        message 'Should we continue?'
-        id 'Yes, we should.'
-        parameters {
-          string(name: 'PERSON', defaultValue: 'Mr Jenkins', description: 'Who should I say hello to?')
+    stage('Example Build') {
+      steps {
+        echo 'Hello World'
+      }
+    }
+    stage('Example Deploy') {
+      when {
+        expression {
+          BRANCH_NAME ==~ /(production|staging)/
         }
+
+        anyOf {
+          environment name: 'DEPLOY_TO', value: 'production'
+          environment name: 'DEPLOY_TO', value: 'staging'
+        }
+
       }
       steps {
-        echo "Hello, ${PERSON}, nice to meet you."
+        echo 'Deploying'
       }
     }
   }
