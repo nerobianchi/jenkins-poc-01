@@ -17,7 +17,8 @@ pipeline {
                 echo myStage
             }
         }
-
+stage('Tests') {
+      parallel {
         stage('Stage1') {
             when {
                 expression { myStage == 'Stage1' }
@@ -44,6 +45,9 @@ pipeline {
                 echo "Running Stage3"
             }
         }
+      }
+    }
+        
 
     }
 }
