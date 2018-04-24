@@ -1,26 +1,23 @@
 pipeline {
-  agent any
-  stages {
-    stage('Example Build') {
-      steps {
-        echo 'Hello World'
-      }
+    agent any
+    parameters {
+        choice(
+            // choices are a string of newline separated values
+            // https://issues.jenkins-ci.org/browse/JENKINS-41180
+            choices: 'greeting\nsilence',
+            description: '',
+            name: 'REQUESTED_ACTION')
     }
-    stage('Example Deploy') {
-      when {
-        expression {
-          BRANCH_NAME ==~ /(production|staging)/
-        }
 
-        anyOf {
-          environment name: 'DEPLOY_TO', value: 'production'
-          environment name: 'DEPLOY_TO', value: 'staging'
+    stages {
+        stage ('Speak') {
+            when {
+                // Only say hello if a "greeting" is requested
+                expression { params.REQUESTED_ACTION == 'greeting' }
+            }
+            steps {
+                echo "Hello, bitwiseman!"
+            }
         }
-
-      }
-      steps {
-        echo 'Deploying'
-      }
     }
-  }
 }
